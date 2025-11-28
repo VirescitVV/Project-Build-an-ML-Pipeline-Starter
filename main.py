@@ -88,15 +88,11 @@ def go(config: DictConfig):
 
         if "data_split" in active_steps:
             _ = mlflow.run(
-                # This is a *component* in the components repo, not under src/
                 f"{config['main']['components_repository']}/train_val_test_split",
                 "main",
                 env_manager="conda",
                 parameters={
-                    # use the cleaned data artifact as input
                     "input": "clean_sample.csv:latest",
-
-                    # grab the rest from the modeling section of config.yaml
                     "test_size": config["modeling"]["test_size"],
                     "random_seed": config["modeling"]["random_seed"],
                     "stratify_by": config["modeling"]["stratify_by"],
@@ -131,12 +127,15 @@ def go(config: DictConfig):
             )
 
         if "test_regression_model" in active_steps:
-
-            ##################
-            # Implement here #
-            ##################
-
-            pass
+            _ = mlflow.run(
+                f"{config['main']['components_repository']}/test_regression_model",
+                "main",
+                env_manager="conda",
+                parameters={
+                    "mlflow_model": "random_forest_export:prod",
+                    "test_dataset": "test_data.csv:latest",
+                },
+            )
 
 
 if __name__ == "__main__":
