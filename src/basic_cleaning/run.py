@@ -30,6 +30,11 @@ def go(args):
     # Convert last_review to datetime
     df['last_review'] = pd.to_datetime(df['last_review'])
 
+    # Attempted to continue with step 6's instruction to train the model
+    # on a new data sample, however, the following 2 lines, which are also
+    # offered in the course as a fix, were already in the code as provided
+    # by the repo I had forked. I'm creating this comment so I can still
+    # commit and push a change so I can still release a v1.0.1
     idx = df['longitude'].between(-74.25, -73.50) & df['latitude'].between(40.5, 41.2)
     df = df[idx].copy()
     # Save the cleaned file
